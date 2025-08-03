@@ -1,6 +1,76 @@
 version: "3.8"
 
 services:
+  booking-history-service:
+    build:
+      context: ./booking-history-service
+      dockerfile: Dockerfile
+    container_name: booking-history-service
+    #ports:
+      #- "8078:3000"
+    networks:
+      - hotelio-net
+    environment:
+      POSTGRES_URL: postgresql://booking-history:booking-history@booking-history-db:5432/booking-history
+      KAFKA_URL: kafka:9092
+    depends_on:
+      booking-db:
+        condition: service_healthy
+
+  booking-history-db:
+    image: postgres:15
+    container_name: booking-history-db
+    environment:
+      POSTGRES_USER: booking-history
+      POSTGRES_PASSWORD: booking-history
+      POSTGRES_DB: booking-history
+    ports:
+      - "5430:5432"
+    volumes:
+      - booking-history-db-data:/var/lib/postgresql/data
+    networks:
+      - hotelio-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  booking-service:
+    build:
+      context: ./booking
+      dockerfile: Dockerfile
+    container_name: booking-service
+    ports:
+      - "8079:3000"
+    networks:
+      - hotelio-net
+    environment:
+      POSTGRES_URL: postgresql://booking:booking@booking-db:5432/booking
+      KAFKA_URL: kafka:9092
+    depends_on:
+      booking-db:
+        condition: service_healthy
+
+  booking-db:
+    image: postgres:15
+    container_name: booking-db
+    environment:
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: booking
+      POSTGRES_DB: booking
+    ports:
+      - "5431:5432"
+    volumes:
+      - booking-db-data:/var/lib/postgresql/data
+    networks:
+      - hotelio-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   monolith:
     build:
       context: ../monolith
@@ -15,7 +85,7 @@ services:
       SPRING_DATASOURCE_USERNAME: hotelio
       SPRING_DATASOURCE_PASSWORD: hotelio
       BOOKING_SERVICE_EXTERNAL_HOST: booking-service
-      BOOKING_SERVICE_EXTERNAL_PORT: 9090
+      BOOKING_SERVICE_EXTERNAL_PORT: 3000
 
   monolith-db:
     image: postgres:15
@@ -42,6 +112,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - hotelio-net
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.2.1
     ports:
@@ -52,8 +123,25 @@ services:
     networks:
       - hotelio-net
 
+  kafbat-ui:
+    container_name: kafbat-ui
+    image: ghcr.io/kafbat/kafka-ui:latest
+    ports:
+      - 8080:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - hotelio-net
+    depends_on:
+      - kafka
+      - zookeeper
+
 volumes:
   monolith-db-data:
+  booking-db-data:
+  booking-history-db-data:
 
 networks:
   hotelio-net:
