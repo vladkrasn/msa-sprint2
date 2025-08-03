@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ESnext",
+		"module": "NodeNext",
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"verbatimModuleSyntax": true,
+		"noImplicitOverride": true,
+		"strict": true,
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"erasableSyntaxOnly": true
+	}
+}

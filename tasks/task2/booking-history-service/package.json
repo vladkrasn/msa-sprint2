@@ -1,0 +1,23 @@
+{
+	"type": "module",
+	"scripts": {
+		"dev": "node --watch src/index.ts",
+		"start": "node src/index.ts",
+		"code:check": "biome check",
+		"migrate:make": "kysely migrate:make",
+		"migrate:latest": "kysely migrate:latest"
+	},
+	"dependencies": {
+		"@types/node": "^24.1.0",
+		"dotenv": "^17.2.1",
+		"kysely": "^0.28.4",
+		"kysely-ctl": "^0.14.0",
+		"kysely-postgres-js": "^2.0.0",
+		"node-rdkafka": "^3.4.1",
+		"postgres": "^3.4.7",
+		"zod": "^4.0.14"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.3"
+	}
+}
