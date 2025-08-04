@@ -1,10 +1,8 @@
-FROM node:18
+FROM oven/bun:1.2.19
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install
-
 COPY . .
+RUN bun install --prod --frozen-lockfile
 
-CMD ["node", "index.js"]
+CMD ["bun", "start"]
