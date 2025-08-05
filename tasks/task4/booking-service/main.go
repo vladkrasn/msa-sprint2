@@ -7,14 +7,15 @@ import (
 	"os"
 )
 
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "pong")
+}
+
 func main() {
 	enableFeatureX := os.Getenv("ENABLE_FEATURE_X") == "true"
 
-	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "pong")
-	})
+	http.HandleFunc("/ping", PingHandler)
 
-	// TODO: Feature flag route
 	// if ENABLE_FEATURE_X=true, expose /feature
 	if enableFeatureX {
 		http.HandleFunc("/feature", func(w http.ResponseWriter, r *http.Request) {
