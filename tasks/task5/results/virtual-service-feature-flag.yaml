@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: booking-service
+spec:
+  hosts:
+  - booking-service
+  http:
+  - match:
+    - headers:
+        X-New-Feature:
+          exact: "true" # if this is true, route here
+    route:
+    - destination:
+        host: booking-service
+        subset: v2
+  - route:
+    - destination:
+        host: booking-service
+        subset: v1
