@@ -1,0 +1,47 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"formatter": {
+		"lineWidth": 120
+	},
+	"linter": {
+		"rules": {
+			"style": {
+				"useForOf": "error",
+				"useShorthandAssign": "error",
+				"noParameterProperties": "error",
+				"noParameterAssign": "error",
+				"useAsConstAssertion": "error",
+				"useDefaultParameterLast": "error",
+				"useEnumInitializers": "error",
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error",
+				"noUnusedTemplateLiteral": "error",
+				"useNumberNamespace": "error",
+				"noInferrableTypes": "error",
+				"noUselessElse": "error",
+				"useConsistentMemberAccessibility": "warn",
+				"noYodaExpression": "error",
+				"noCommonJs": "error",
+				"useThrowNewError": "error",
+				"useThrowOnlyError": "error"
+			},
+			"correctness": {},
+			"complexity": {
+				"noForEach": "error",
+				"useWhile": "error"
+			},
+			"suspicious": {
+				"noEvolvingTypes": "error"
+			},
+			"performance": {
+				"noBarrelFile": "error",
+				"noReExportAll": "error"
+			},
+			"nursery": {}
+		},
+		"domains": {
+			"project": "recommended"
+		}
+	}
+}

@@ -7,6 +7,8 @@
 - Node.js + npm — желательно через nvm
 - gitlab-ci-local
 
+ minikube docker-env | Invoke-Expression
+
 # Команды установки (Ubuntu/WSL)
 
 ## Установка nvm
@@ -109,6 +111,6 @@ pong
 
 Для доступа снаружи используйте:
 ```bash
-kubectl port-forward svc/booking-service 8080:80
+kubectl port-forward svc/booking-service 8080:8080
 curl http://localhost:8080/ping
 ```
